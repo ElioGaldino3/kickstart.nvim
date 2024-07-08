@@ -9,3 +9,4 @@ map.set('n', '<leader>q', ":bdelete<cr>")
 map.set('n', '<leader>w', ":w<cr>")
 
 map.set('i', 'jk', '<esc>')
+map.set('n', ';', ':')
