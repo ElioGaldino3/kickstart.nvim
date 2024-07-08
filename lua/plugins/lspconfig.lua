@@ -65,6 +65,13 @@ return { -- LSP Configuration & Plugins
       -- pyright = {},
       biome = {},
       rust_analyzer = {},
+      tsserver = {
+        settings = {
+          completions = {
+            completeFunctionCalls = true,
+          },
+        },
+      },
       lua_ls = {
         -- cmd = {...},
         -- filetypes = { ...},
@@ -96,4 +103,3 @@ return { -- LSP Configuration & Plugins
     }
   end,
 }
-
