@@ -19,6 +19,10 @@ return { -- LSP Configuration & Plugins
         map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
         map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
         map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+        local bufopts = { noremap = true, silent = true }
+
+        vim.keymap.set('n', '<space>d', vim.diagnostic.open_float, bufopts)
+
         map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
         map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
         map('<leader>i', vim.lsp.buf.code_action, '[C]ode [A]ction')
@@ -59,16 +63,44 @@ return { -- LSP Configuration & Plugins
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
+    local util = require 'lspconfig.util'
     local servers = {
       -- clangd = {},
       -- gopls = {},
       -- pyright = {},
+      --
       biome = {},
       rust_analyzer = {},
       tsserver = {
         settings = {
           completions = {
             completeFunctionCalls = true,
+          },
+        },
+      },
+      sqlls = {
+        connections = {
+          {
+            driver = 'postgresql',
+            dataSourceName = 'host=127.0.0.1 port=5432 user=gg password=gg dbname=gg sslmode=disable',
+          },
+          {
+            driver = 'postgresql',
+            dataSourceName = 'host=127.0.0.1 port=5432 user=domicile password=domicile dbname=domicile sslmode=disable',
+          },
+        },
+      },
+      gopls = {
+        cmd = { 'gopls' },
+        filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
+        root_dir = util.root_pattern('go.work', 'go.mod'),
+        settings = {
+          gopls = {
+            completeUnimported = true,
+            usePlaceholders = true,
+            analyses = {
+              unusedparams = true,
+            },
           },
         },
       },
@@ -89,6 +121,8 @@ return { -- LSP Configuration & Plugins
     local ensure_installed = vim.tbl_keys(servers or {})
     vim.list_extend(ensure_installed, {
       'stylua', -- Used to format Lua code
+      'gopls',
+      'goimports',
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

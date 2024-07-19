@@ -3,11 +3,21 @@ return {
   dependencies = { 'rafamadriz/friendly-snippets' },
   config = function()
     local ls = require 'luasnip'
+    local types = require 'luasnip.util.types'
     require('luasnip.loaders.from_vscode').lazy_load()
 
     require('luasnip.loaders.from_lua').load { paths = '~/.config/nvim/snippets/' }
-    ls.config.setup { store_selection_keys = '<A-p>' }
-    vim.cmd [[command! LuaSnipEdit :lua require("luasnip.loaders.from_lua").edit_snippet_files()]]
+    ls.config.setup {
+      store_selection_keys = '<A-p>',
+      ext_opts = {
+        [types.choiceNode] = {
+          active = { virt_text = { { '⇥', 'GruvboxRed' } } },
+        },
+        [types.insertNode] = {
+          active = { virt_text = { { '⇥', 'GruvboxBlue' } } },
+        },
+      },
+    }
 
     ls.config.set_config {
       history = true,

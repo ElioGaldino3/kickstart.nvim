@@ -15,11 +15,15 @@ local cmp_opts = function()
   end
 
   local options = {
+    -- window = {
+    --   documentation = {
+    --     border = border 'CmpDocBorder',
+    --     winhighlight = 'Normal:CmpDoc',
+    --   },
+    -- },
     window = {
-      documentation = {
-        border = border 'CmpDocBorder',
-        winhighlight = 'Normal:CmpDoc',
-      },
+      completion = cmp.config.window.bordered(),
+      documentation = cmp.config.window.bordered(),
     },
     snippet = {
       expand = function(args)
@@ -40,7 +44,7 @@ local cmp_opts = function()
         select = true,
       },
 
-      ['<Tab>'] = cmp.mapping(function(fallback)
+      ['<C-l>'] = cmp.mapping(function(fallback)
         if cmp.visible() then
           cmp.select_next_item()
         elseif require('luasnip').expand_or_jumpable() then
@@ -50,7 +54,7 @@ local cmp_opts = function()
         end
       end, { 'i', 's' }),
 
-      ['<S-Tab>'] = cmp.mapping(function(fallback)
+      ['<C-h>'] = cmp.mapping(function(fallback)
         if cmp.visible() then
           cmp.select_prev_item()
         elseif require('luasnip').jumpable(-1) then
@@ -89,4 +93,3 @@ return {
     require('cmp').setup(opts)
   end,
 }
-
