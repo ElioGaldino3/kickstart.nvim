@@ -31,7 +31,7 @@ vim.opt.inccommand = 'split'
 
 vim.opt.cursorline = true
 
-vim.opt.scrolloff = 10
+vim.opt.scrolloff = 7
 
 vim.opt.hlsearch = true
 
