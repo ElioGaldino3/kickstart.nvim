@@ -126,6 +126,7 @@ return { -- LSP Configuration & Plugins
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
+    require('lspconfig').dartls.setup {}
     require('mason-lspconfig').setup {
       handlers = {
         function(server_name)

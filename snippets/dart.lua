@@ -1,163 +1,163 @@
-local ls = require("luasnip")
+local ls = require 'luasnip'
 local i = ls.i
 local s = ls.s
 local t = ls.t
-local fmta = require("luasnip.extras.fmt").fmta
-local r = require("luasnip.extras").rep
+local fmta = require('luasnip.extras.fmt').fmta
+local r = require('luasnip.extras').rep
 
 local snippets, autosnippets = {}, {}
 
 local sized_box_height = s(
-	"sbh",
-	fmta(
-		[[
+  'sbh',
+  fmta(
+    [[
   const SizedBox(height: <>),
   ]],
-		{ i(1) }
-	)
+    { i(1) }
+  )
 )
 local sized_box_width = s(
-	"sbw",
-	fmta(
-		[[
+  'sbw',
+  fmta(
+    [[
   const SizedBox(width: <>),
   ]],
-		{ i(1) }
-	)
+    { i(1) }
+  )
 )
 
 local modular_module = s(
-	"smod",
-	fmta(
-		[[
+  'smod',
+  fmta(
+    [[
 import 'package:flutter_modular/flutter_modular.dart';
 
 class <>Module extends Module {
   <>
 }
 ]],
-		{ i(1), i(2) }
-	)
+    { i(1), i(2) }
+  )
 )
 
 local screen_sizes = s(
-	"ssize",
-	fmta(
-		[[
+  'ssize',
+  fmta(
+    [[
 final size = MediaQuery.of(context).size;
 final screenWidth = size.width;
 final screenHeigth = size.height;
 ]],
-		{}
-	)
+    {}
+  )
 )
 
 local column = s(
-	"coll",
-	fmta(
-		[[
+  'coll',
+  fmta(
+    [[
 Column(
   children: [
     <>,
   ],
 )
 ]],
-		{ i(1) }
-	)
+    { i(1) }
+  )
 )
 
 local row = s(
-	"roll",
-	fmta(
-		[[
+  'roll',
+  fmta(
+    [[
 Row(
   children: [
     <>,
   ],
 )
 ]],
-		{ i(1) }
-	)
+    { i(1) }
+  )
 )
 
 local svg_picture = s(
-	"svga",
-	fmta(
-		[[
+  'svga',
+  fmta(
+    [[
 SvgPicture.asset(
   '<>',
   width: <>,
   height: <>,
 ),
 ]],
-		{ i(1), i(2), i(2) }
-	)
+    { i(1), i(2), i(2) }
+  )
 )
 
 local main_axis = s(
-	"maxis",
-	fmta(
-		[[
+  'maxis',
+  fmta(
+    [[
 mainAxisAlignment: MainAxisAlignment.<>,
 ]],
-		{ i(1) }
-	)
+    { i(1) }
+  )
 )
 
 local cross_axis = s(
-	"caxis",
-	fmta(
-		[[
+  'caxis',
+  fmta(
+    [[
 crossAxisAlignment: CrossAxisAlignment.<>,
 ]],
-		{ i(1) }
-	)
+    { i(1) }
+  )
 )
 
 local text = s(
-	"tx",
-	fmta(
-		[[
+  'tx',
+  fmta(
+    [[
 Text('<>')
 ]],
-		{ i(1) }
-	)
+    { i(1) }
+  )
 )
 
 local text_editting_controller = s(
-	"tcont",
-	fmta(
-		[[
+  'tcont',
+  fmta(
+    [[
 final TextEditingController _textEditingController<> = TextEditingController();
 ]],
-		{ i(1) }
-	)
+    { i(1) }
+  )
 )
 
 local text_form_field = s(
-	"tff",
-	fmta(
-		[[
+  'tff',
+  fmta(
+    [[
 CustomTextFormField(onChanged: (v) =<> <> = v)
 ]],
-		{ t(">"), i(1) }
-	)
+    { t '>', i(1) }
+  )
 )
 
 local custom_button = s(
-	"cbu",
-	fmta(
-		[[
+  'cbu',
+  fmta(
+    [[
 CustomButton(onPressed: <>, child: const Text('<>').defaultFont().white()),
 ]],
-		{ i(""), i(1) }
-	)
+    { i '', i(1) }
+  )
 )
 
 local statefull_widget = s(
-	"stf",
-	fmta(
-		[[
+  'stf',
+  fmta(
+    [[
 class <> extends StatefulWidget {
   <>({super.key});
 
@@ -174,14 +174,14 @@ class _<>State extends State<<<>>> {
   }
 }
 ]],
-		{ i(1), r(1), r(1), r(1), r(1), r(1), i(2) }
-	)
+    { i(1), r(1), r(1), r(1), r(1), r(1), i(2) }
+  )
 )
 
 local stateless_widget = s(
-	"stl",
-	fmta(
-		[[
+  'stl',
+  fmta(
+    [[
 class <> extends StatelessWidget {
   const <>({super.key});
 
@@ -193,20 +193,22 @@ class <> extends StatelessWidget {
   }
 }
 ]],
-		{ i(1), r(1), i(2) }
-	)
+    { i(1), r(1), i(2) }
+  )
 )
 
-local disposer = s("disp", t("disposer();"))
-local child = s("chill", { t("child: "), i(1) })
-local children = s("child", fmta("children: [<>]", { i(1) }))
-local child_slash = s("chs", t("child: "))
-local on_pressed = s("onP", fmta("onPressed: <>", { i(1) }))
-local on_tap = s("onT", fmta("onTap: <>", { i(1) }))
-local function_void = s("fnv", { t("() {"), i(1), t("}") })
-local json_to_object_list = s("jsl", { t("map((e) => "), i(1), t(").toList();") })
-local from_json = s("fjs", { t("fromJson(e)") })
-local expanded = s("expan", fmta("Expanded(child: <>,)", { i(1) }))
+local disposer = s('disp', t 'disposer();')
+local child = s('chill', { t 'child: ', i(1) })
+local children = s('child', fmta('children: [<>]', { i(1) }))
+local child_slash = s('chs', t 'child: ')
+local on_pressed = s('onP', fmta('onPressed: <>', { i(1) }))
+local on_tap = s('onT', fmta('onTap: <>', { i(1) }))
+local function_void = s('fnv', { t '() {', i(1), t '}' })
+local json_to_object_list = s('jsl', { t 'map((e) => ', i(1), t ').toList();' })
+local from_json = s('fjs', { t 'fromJson(e)' })
+local expanded = s('expan', fmta('Expanded(child: <>,)', { i(1) }))
+local custom_text = s('ict', t "import 'package:app/app/core/utils/custom_text.dart';")
+local material_import = s('ict', t "import 'package:flutter/material.dart';")
 
 table.insert(autosnippets, sized_box_height)
 table.insert(autosnippets, sized_box_width)
@@ -233,5 +235,7 @@ table.insert(autosnippets, statefull_widget)
 table.insert(autosnippets, stateless_widget)
 table.insert(autosnippets, expanded)
 table.insert(autosnippets, on_tap)
+table.insert(autosnippets, custom_text)
+table.insert(autosnippets, material_import)
 
 return snippets, autosnippets
